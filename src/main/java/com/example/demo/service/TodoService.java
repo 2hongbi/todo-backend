@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 @Slf4j // Simple Logging Facade for Java
 @Service
@@ -55,5 +56,20 @@ public class TodoService {
     // retrieve
     public List<TodoEntity> retrieve(final String userId) {
         return repository.findByUserId(userId);
+    }
+
+    // update
+    public List<TodoEntity> update(final TodoEntity entity) {
+        validate(entity); // check if entity to save is validate
+
+        final Optional<TodoEntity> original = repository.findById(entity.getId()); // Optional - NPE 방지
+        original.ifPresent(todo -> {
+            todo.setTitle(entity.getTitle());
+            todo.setDone(entity.isDone());
+
+            repository.save(todo);
+        });
+
+        return retrieve(entity.getUserId());
     }
 }
