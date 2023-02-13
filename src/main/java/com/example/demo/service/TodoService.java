@@ -28,7 +28,7 @@ public class TodoService {
         return savedEntity.getTitle();
     }
 
-    public List<TodoEntity> craete(final TodoEntity entity) {
+    public List<TodoEntity> create(final TodoEntity entity) {
         // Validations
         validate(entity);
 
